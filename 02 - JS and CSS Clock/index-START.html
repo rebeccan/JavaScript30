@@ -18,7 +18,7 @@
 
   <style>
     html {
-      background:#018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
+      background:#018DED url();<!--http://unsplash.it/1500/1000?image=881&blur=50);-->
       background-size:cover;
       font-family:'helvetica neue';
       text-align: center;
@@ -62,12 +62,47 @@
       background:black;
       position: absolute;
       top:50%;
+      transform-origin: 100%;
+    }
+
+    .hour-hand {
+      width:40%;
+      height:9px;
+      background:black;
+      left:10%;
+    }
+
+    .second-hand {
+      height:3px;
     }
 
   </style>
 
   <script>
 
+    moveHands();
+
+    setInterval(moveHands, 1000);
+
+    function moveHands(){
+
+      //all hand objects
+      const hourHand = document.querySelector(".hand.hour-hand");
+      const minHand = document.querySelector(".hand.min-hand");
+      const secondHand = document.querySelector(".hand.second-hand");
+
+      //current time
+      const date = new Date();
+
+      //for degree calculation of the hands
+      let hourHandDeg = (date.getHours() * 360 / 12 + 90) % 360;
+      let minHandDeg = (date.getMinutes() * 360 / 60 + 90) % 360;
+      let secondHandDeg = (date.getSeconds() * 360 / 60 + 90) % 360;
+
+      hourHand.style.transform = `rotate(${hourHandDeg}deg)`;
+      minHand.style.transform =`rotate(${minHandDeg}deg)`;
+      secondHand.style.transform = `rotate(${secondHandDeg}deg)`;
+    }
 
   </script>
 </body>
