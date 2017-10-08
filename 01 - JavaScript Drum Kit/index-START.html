@@ -59,6 +59,24 @@
 
 <script>
 
+  function playThatShit(e) {
+    //a selector that gets the first audio element in the document that has a "data-key" attribute with the keycode
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if (audio && key) {
+      if (e.type == "keydown") {
+        audio.currentTime = 0;
+        audio.play();
+        key.classList.add('playing');
+      } else {
+        audio.pause();
+        key.classList.remove('playing');
+      }
+    }
+  };
+
+  window.addEventListener('keydown', playThatShit);
+  window.addEventListener('keyup', playThatShit);
 </script>
 
 
