@@ -15,7 +15,71 @@
     </ul>
   </form>
 <script>
+
+function checkStatus(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return Promise.resolve(response)
+  } else {
+    return Promise.reject(new Error(response.statusText))
+  }
+}
+
+function parseLocations(response) {
+  response.forEach(item => allLocations.push(item.city + ', ' + item.state));
+  allLocations.sort();
+}
+
+function showMatches() {
+  const searchTerm = this.value;
+  const matches = allLocations.filter(function(item) {
+    return item.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+  const suggestions = document.querySelector('.suggestions');
+  let result = '';
+   matches.forEach(function(match) {
+    result = result + `<li><a><span class="name">${match}</span></a></li>`;
+  });
+  suggestions.innerHTML = result;
+
+  //-------------------------------------------------------
+  //write the selected suggestion back into the input field
+  //-------------------------------------------------------
+  const suggestionItems = document.querySelectorAll('.suggestions li');
+  //todo rn: find out if it is okay to add event listeners for each li after each input change
+  //  -> gargabe collector? possible memory leak?
+  suggestionItems.forEach(listItem => listItem.addEventListener('click', function() {
+    inputField.value = this.querySelector('a span').innerHTML;
+  }));
+}
+
+
+//----------------------------
+//read city data from endpoint
+//----------------------------
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+const allLocations = [];
+fetch(endpoint) //attention!! fetch is async, therefore allLocations is probably still empty below
+.then(checkStatus)
+.then(response => response.json())
+.then(parseLocations)
+.catch(function(error) {
+  console.log('Something failed during loading oder parsing cities.json', error);
+});
+
+//attention!! now all cities is still empty
+console.log("allLocations still may be empty. Value (is evaluated after click by Chrome): ", allLocations);
+console.log("allLocations still may be empty. Length: ", allLocations.length);
+
+//------------------------------------------
+//listen on input field and show suggestions
+//------------------------------------------
+//attention!! surely allLocations is complete as soon as the user begins to type
+const inputField = document.querySelector('.search');
+inputField.addEventListener('keyup', showMatches);
+//we need change as keyup may not be enough, e.g. paste with mouse
+inputField.addEventListener('change', showMatches);
+
 
 </script>
   </body>

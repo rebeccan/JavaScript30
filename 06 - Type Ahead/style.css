@@ -40,7 +40,7 @@
       position: relative;
       /*perspective:20px;*/
     }
-    .suggestions li {
+    .suggestions li{
       background:white;
       list-style: none;
       border-bottom: 1px solid #D8D8D8;
@@ -56,10 +56,21 @@
     .suggestions li:nth-child(even) {
       transform: perspective(100px) rotateX(3deg) translateY(2px) scale(1.001);
       background: linear-gradient(to bottom,  #ffffff 0%,#EFEFEF 100%);
+
     }
     .suggestions li:nth-child(odd) {
       transform: perspective(100px) rotateX(-3deg) translateY(3px);
       background: linear-gradient(to top,  #ffffff 0%,#EFEFEF 100%);
+    }
+
+    .suggestions li:hover {
+      background: #EEEEEE;
+      transition:background 0s;
+    }
+
+    .suggestions li:active {
+      background: #c6e7ff;
+      transition:background 0s;
     }
 
     span.population {
