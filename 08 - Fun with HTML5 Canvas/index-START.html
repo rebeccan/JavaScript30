@@ -7,6 +7,66 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+
+
+const canvas = document.querySelector('#draw');
+// set the canvas to the size of the window
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+//get CanvasRenderingContext2D
+const ctx = canvas.getContext('2d');
+ctx.strokeStyle = '#000000';
+ctx.lineJoin = 'round';
+ctx.lineCap = 'round';
+ctx.lineWidth = 10; //default
+
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+
+let hue = 0;
+
+function draw(mousemoveEvent) {
+  //only draw when mouse is pressed during moving
+  if(!isDrawing) {
+    return;
+  }
+  //hsl(hue, saturation, lightness)
+  ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY); //moves the starting point
+  ctx.lineTo(mousemoveEvent.offsetX, mousemoveEvent.offsetY); //draw a line to an enpoint
+  ctx.stroke(); //do the final drawing
+  //preapre starting point of next line
+  [lastX, lastY] = [mousemoveEvent.offsetX, mousemoveEvent.offsetY];
+  hue++;
+  if(hue > 360) {
+    hue = 0;
+  }
+}
+
+function initDraw(mousedownEvent) {
+  isDrawing = true;
+  //determine at what coordinates the drawing begins
+  [lastX, lastY] = [mousedownEvent.offsetX, mousedownEvent.offsetY];
+}
+
+function brushSize(mousewheelEvent){
+  if(mousewheelEvent.deltaY < 0 && ctx.lineWidth < 100) {
+    ctx.lineWidth ++;
+  }
+  if (mousewheelEvent.deltaY > 0 && ctx.lineWidth > 1) {
+    ctx.lineWidth --;
+  }
+}
+
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mousedown', initDraw);
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseout', () => isDrawing = false); //stop drawing when canvas is left
+canvas.addEventListener('wheel', brushSize); //determine brush size with mousewheel
+
+
 </script>
 
 <style>
