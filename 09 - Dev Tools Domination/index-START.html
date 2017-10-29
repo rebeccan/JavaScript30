@@ -17,29 +17,79 @@
       p.style.fontSize = '50px';
     }
 
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function wait() {
+      console.time('How long does take wait sleep?');
+      await sleep(2000);
+      console.timeEnd('How long does take wait sleep?');
+    }
+
+    //Breakpoing MUST KNOWs:
+    // set a breakpoint onto a HTML element in chrome with "break on... -> attribute modification"
+    // -> will show corresponding JS
+
+    //console.log MUST KNOWs:
     // Regular
+    console.log("That is boring, we know that already!");
 
     // Interpolated
+    const name = 'Rebecca';
+    console.log('Hello %s, this is similar to Java format strings!', name);
+    //Backticks are ES6:
+    console.log(`Hello ${name}, this is the new ES6 approach!`, name);
 
     // Styled
+    console.log('%c I am a styled text, dont overlook me! I am styled with putting a \%c in front of me!', 'color:green');
 
     // warning!
+    console.warn('I am a warning, I can have a strack trace!');
 
     // Error :|
+    console.error('I am an error, I can have a strack trace, too!');
 
     // Info
+    console.info('I am on info level!');
 
     // Testing
+    console.assert(1 === 2, "I am fired if 1 ==== 2 is wrong!");
+    console.assert(1 === 1, "I am fired if 1 ==== 1 is wrong!");
 
     // clearing
+    //console.clear();
 
     // Viewing DOM Elements
+    const paragraph = document.querySelector('p');
+    console.log(paragraph);
+    console.dir(paragraph);
 
     // Grouping together
+    //gives a better overview over Elements
+    dogs.forEach(dog => {
+      console.group(`${dog.name}`);
+      console.log('%s is the name of the dog', dog.name);
+      console.log('%s is the age of the dog', dog.age);
+      console.groupEnd(`${dog.name}`); //same string as above!!
+    });
 
     // counting
+    console.count('Count this string');
+    console.count('Count this string');
+    console.count('Count another string')
+    console.count('Count another string')
+    console.count('Count this string');
+
+    //table
+    //display collections with same attributes
+    console.table(dogs);
 
     // timing
+    console.time('how long does this async wait function?');
+    wait();
+    console.timeEnd('how long does this async wait function?'); //same string as above!!
+    //oops! async!
 
   </script>
 </body>
