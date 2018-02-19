@@ -99,6 +99,38 @@
   </div>
 
 <script>
+
+  let isShiftPressed = false;
+  let firstCheckbox;
+  const items = Array.from(document.querySelectorAll('.inbox input[type="checkbox"]'));
+
+  function checkOrUncheckAllItemsBetween(itemOne, itemTwo, toCheck){
+    let indexOne = Math.min(items.indexOf(itemOne), items.indexOf(itemTwo));
+    let indexTwo = Math.max(items.indexOf(itemOne), items.indexOf(itemTwo));
+    console.debug('set all items between: %s and %s to checked=%s', indexOne, indexTwo, toCheck);
+
+    for(i=0; i<items.length; i++){
+      //lies between the indexes, then check it
+      if(i >= indexOne && i <= indexTwo) {
+        items[i].checked = toCheck;
+        console.log('check: ', items[i]);
+      }
+    }
+  }
+
+  function handle(e) {
+    if(!e.shiftKey) {
+      //remember first checkbox before shift is pressed
+      firstCheckbox = this;
+      console.debug('firstCheckbox: ', firstCheckbox);
+    }
+    else {
+      checkOrUncheckAllItemsBetween(firstCheckbox, this, firstCheckbox.checked);
+    }
+  }
+
+  items.forEach(item => item.addEventListener('click', handle));
+
 </script>
 </body>
 </html>
